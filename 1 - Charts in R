@@ -21,6 +21,8 @@ Maximum Temperature(Daily)",
      freq = TRUE)
 
 
+
+
 # Box plot for average wind speed
 data(airquality)
 boxplot(airquality$Wind, main = "Average wind speed\
@@ -30,10 +32,14 @@ at La Guardia Airport",
         horizontal = TRUE, notch = TRUE)
 
 
+
+
+
 # Multiple Box plots, each representing
 # an Air Quality Parameter
 boxplot(airquality[, 0:4], 
         main ='Box Plots for Air Quality Parameters')
+
 
 
 # Scatter plot for Ozone Concentration per month
@@ -42,6 +48,8 @@ plot(airquality$Ozone, airquality$Month,
      main ="Scatterplot Example",
      xlab ="Ozone Concentration in parts per billion",
      ylab =" Month of observation ", pch = 19)
+
+
 
 
 # Set seed for reproducibility
@@ -53,6 +61,9 @@ colnames(data) <- paste0("col", 1:5)
 rownames(data) <- paste0("row", 1:5)
 # Draw a heatmap
 heatmap(data)  
+
+
+
 
 
 install.packages("maps")
@@ -82,25 +93,3 @@ persp(x, y, z,
       zlab = "Height",
       theta = 30, phi = 15,
       col = "orange", shade = 0.4)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
