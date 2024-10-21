@@ -1,0 +1,230 @@
+https://colab.research.google.com/drive/1Ja3ZvIRJls6zVmLbJwI88D5P1X57vpA8?usp=sharing
+
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+import seaborn as sns
+import matplotlib.dates as mdates
+from matplotlib.dates import DateFormatter
+import plotly.express as px
+%matplotlib inline
+
+
+
+df = pd.read_csv('/content/covid_19_india.csv')
+df.head()
+
+
+
+df.columns
+
+
+
+df.shape
+
+
+df.isna().sum()
+
+
+df.dtypes
+
+
+df.tail()
+
+
+
+df['ConfirmedIndianNational'].value_counts()
+
+
+df['ConfirmedForeignNational'].value_counts()
+
+
+df = df.drop(['ConfirmedIndianNational','ConfirmedForeignNational', 'Sno', 'Time'], axis = 1)
+
+
+df.head()
+
+
+df['State/UnionTerritory'].unique()
+
+
+
+df.rename(columns={'State/UnionTerritory':'States'}, inplace=True)
+df['States'] = df['States'].replace(['Maharashtra'],'MH')
+df['States'] = df['States'].replace(['Kerala'],'KL')
+df['States'] = df['States'].replace(['Karnataka'],'KA')
+df['States'] = df['States'].replace(['Tamil Nadu'],'TN')
+df['States'] = df['States'].replace(['Andhra Pradesh'],'AP')
+df['States'] = df['States'].replace(['Uttar Pradesh'],'UP')
+df['States'] = df['States'].replace(['Madhya Pradesh'],'MP')
+df['States'] = df['States'].replace(['Karanataka'],'KA')
+df['States'] = df['States'].replace(['West Bengal'],'WB')
+df['tates'] = df['States'].replace(['Himachal Pradesh'],'HP')
+df['States'] = df['States'].replace(['Jammu and Kashmir'],'JNK')
+df['States'].unique()
+
+
+
+df_latest = df[df['Date']=="27/03/20"]
+df_latest.head()
+
+
+
+df_latest['Confirmed'].sum()
+
+
+df['Active_cases']=df['Confirmed']-(df['Cured']+df['Deaths'])
+df['%Cured']=(df['Cured']/df['Confirmed'])*100
+df['%Deaths']=(df['Deaths']/df['Confirmed'])*100
+df_latest = df_latest.sort_values(by=['Confirmed'], ascending = False)
+df_latest.head(10)
+
+
+
+df_latest = df_latest.sort_values(by=['Confirmed'], ascending = False)
+plt.figure(figsize=(12,4), dpi=80)
+plt.bar(df_latest['States'][:10], df_latest['Confirmed'][:10],align='center',color='blue')
+plt.ylabel('Number of Confirmed Cases', size = 12)
+plt.title("States with maximum confirmed cases till Aug’21", size = 16)
+plt.show()
+
+
+
+df2= df_latest.copy()
+df_Top= df2.head(10)
+df_Top.style.background_gradient(cmap='Reds')
+
+
+
+df2 = df2.sort_values(by=['Confirmed'], ascending = False)
+for feature in df2[['Cured','Deaths','Confirmed']]:
+  fig=plt.figure(figsize=(30,10))
+plt.title("Top 10 highly impacted sates as on 11-Aug-21", size=10)
+ax=sns.barplot(data=df2,y=df2[feature],x='States', linewidth=0, edgecolor='black')
+plt.xlabel('States', size = 15)
+plt.ylabel(feature, size = 15)
+for i in ax.patches:
+  ax.text(x=i.get_x(),y=i.get_height(),s=i.get_height())
+plt.show()
+
+
+
+df_latest['Deaths'].sum()
+
+
+
+sns.set(rc={'figure.figsize':(10,8)})
+sns.lineplot(x='Date', y='Confirmed', data=df)
+
+
+
+states=['Kerala', 'Tamil Nadu', 'Maharashtra', 'Karnataka', 'Andhra Pradesh', 'Uttar Pradesh', 'Madhya Pradesh',
+        'West Bengal' ]
+MH=df[df['States']=='MH']
+KL=df[df['States']=='KL']
+KR=df[df['States']=='KA']
+TN=df[df['States']=='TN']
+AP=df[df['States']=='AP']
+UP=df[df['States']=='UP']
+WB=df[df['States']=='WB']
+Delhi=df[df['States']=='Delhi']
+Chhattisgarh=df[df['States']=='Chhattisgarh']
+Odisha=df[df['States']=='Odisha']
+fig, ax=plt.subplots(nrows=3, ncols=3, figsize=(23,10), squeeze=False, sharex=True, sharey=False,
+                                              constrained_layout=True )
+plt.suptitle("Comparison of Active, Cured & Deaths for top States", size = 25)
+sns.lineplot(data=MH, x='Date',y='Active_cases', ax=ax[0,0], color='b')
+ax[0,0].set_title("Maharashtra", size=20)
+sns.lineplot(data=MH, x='Date',y='Cured', ax=ax[1,0], color='b')
+sns.lineplot(data=MH, x='Date',y='Deaths', ax=ax[2,0], color='b')
+sns.lineplot(data=KL, x='Date',y='Active_cases', ax=ax[0,1], color='b')
+ax[0,1].set_title("Kerala", size=20)
+sns.lineplot(data=KL, x='Date',y='Cured', ax=ax[1,1], color='b')
+sns.lineplot(data=KL, x='Date',y='Deaths', ax=ax[2,1], color='b')
+sns.lineplot(data=KR, x='Date',y='Active_cases', ax=ax[0,2], color='b')
+ax[0,2].set_title("Karnataka", size=20)
+sns.lineplot(data=KR, x='Date',y='Cured', ax=ax[1,2], color='b')
+sns.lineplot(data=KR, x='Date',y='Deaths', ax=ax[2,2], color='b')
+plt.show()
+
+
+
+
+fig, ax=plt.subplots(nrows=3, ncols=3, figsize=(23,10), squeeze=False, sharex=True, sharey=False, constrained_layout=True )
+plt.suptitle("Comparison of Active, Cured & Deaths for top States", size = 25)
+sns.lineplot(data=TN, x='Date',y='Active_cases', ax=ax[0,0], color='b')
+ax[0,0].set_title('Tamil Nadu', size=20)
+sns.lineplot(data=MH, x='Date',y='Cured', ax=ax[1,0], color='b')
+sns.lineplot(data=MH, x='Date',y='Deaths', ax=ax[2,0], color='b')
+sns.lineplot(data=AP, x='Date',y='Active_cases', ax=ax[0,1], color='b')
+ax[0,1].set_title("Andhra Pradesh", size=20)
+sns.lineplot(data=KL, x='Date',y='Cured', ax=ax[1,1], color='b')
+sns.lineplot(data=KL, x='Date',y='Deaths', ax=ax[2,1], color='b')
+sns.lineplot(data=AP, x='Date',y='Active_cases', ax=ax[0,2], color='b')
+ax[0,2].set_title("Uttar Pradesh", size=20)
+sns.lineplot(data=KR, x='Date',y='Cured', ax=ax[1,2], color='b')
+sns.lineplot(data=KR, x='Date',y='Deaths', ax=ax[2,2], color='b')
+plt.show()
+
+
+
+
+
+df_latest.shape
+
+
+
+df['Date']= pd.to_datetime(df['Date']) # Date is converted to DateTime format.
+data_20 = df[df['Date'].dt.year==2020] # Considering data of only the year 2020.
+data_21 = df[df['Date'].dt.year==2021] # Considering data of only the year 2021.
+data_20['Month']=data_20['Date'].dt.month # Month is accessed from the DateTime object.
+data_21['Month']=data_21['Date'].dt.month
+
+
+
+
+data_confirm_20= data_20['Confirmed'].groupby(data_20['Month']).sum()
+data_dis_20= data_20['Cured'].groupby(data_20['Month']).sum() # creating instances for 'confirmed','deaths','discharged' by month column
+data_death_20= data_20['Deaths'].groupby(data_20['Month']).sum()
+
+
+
+
+data_confirm_21= data_21['Confirmed'].groupby(data_21['Month']).sum()
+data_dis_21= data_21['Cured'].groupby(data_21['Month']).sum() # creating instances for ‘confirmed’,’deaths’,’discharged’ by month column
+data_death_21= data_21['Deaths'].groupby(data_21['Month']).sum()
+cols_20=[data_confirm_20,data_dis_20,data_death_20]
+data_20=pd.concat(cols_20,axis=1)
+cols_21=[data_confirm_21,data_dis_21,data_death_21]
+data_21=pd.concat(cols_21,axis=1)
+
+
+
+
+data_20['discharge_rate_20'] = np.round((data_20['Cured']/data_20['Confirmed'])*100, decimals=4) # create instances for ‘death_rate and discharge_rate’
+data_20['death_rate_20'] = np.round((data_20['Deaths']/data_20['Confirmed'])*100, decimals=4)
+
+
+
+
+data_21['discharge_rate_21'] = np.round((data_21['Cured']/data_21['Confirmed'])*100, decimals=4) # create instances for ‘death_rate and discharge_rate’
+data_21['death_rate_21'] = np.round((data_21['Deaths']/data_21['Confirmed'])*100, decimals=4)
+
+
+
+data_20.reset_index(inplace=True)
+data_20.head()
+
+
+
+
+plt.figure(figsize=(10,5))
+sns.lineplot(x="Month",y="discharge_rate_20",data=data_20,color="g",lw=3,marker='o',markersize=10)
+plt.title('DISCHARGE RATE PER MONTH IN 2020')
+plt.show()
+
+
+
+
+
