@@ -36,15 +36,12 @@ create database organization;
 show databases;
 use organization;
 show tables;
-create table employee(
- > id int,
- > name string,
- > city string,
- > department string,
- > salary int,
- > domain string)
- > row format delimited
- > field terminated by ‘~’;
+
+CREATE TABLE employee (id INT, name STRING, city STRING, department STRING, salary INT, domain STRING) ROW FORMAT DELIMITED FIELDS TERMINATED BY '~' STORED AS TEXTFILE;
+
+
+
+
 show tables;
 select * from employee;
 show tables;
