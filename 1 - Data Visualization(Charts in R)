@@ -93,3 +93,14 @@ persp(x, y, z,
       zlab = "Height",
       theta = 30, phi = 15,
       col = "orange", shade = 0.4)
+
+
+Horizontal Bar Plot (Ozone): Shows ozone levels as horizontal bars.
+Vertical Bar Plot (Ozone): Displays ozone levels as vertical blue bars.
+Histogram (Temperature): Shows how temperatures are spread out, using yellow bars.
+Box Plot (Wind Speed): Summarizes wind speed with an orange box plot.
+Multiple Box Plots: Displays box plots for several air quality measures together.
+Scatter Plot (Ozone per Month): Plots dots for ozone levels in different months.
+Heatmap: Creates a color map for a 5x5 matrix of random numbers.
+World Map with Cities: Marks 500 cities on a world map with red dots.
+3D Cone Plot: Plots a 3D cone shape with shading.
