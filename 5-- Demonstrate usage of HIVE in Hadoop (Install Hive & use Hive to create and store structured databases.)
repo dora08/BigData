@@ -1,33 +1,17 @@
-cat > /home/cloudera/employee.txt 
-(after this type the following details one by one)
-1~Sachin~Pune~Product Engineering~100000~Big Data
-2~Gaurav~Bangalore~Sales~90000~CRM
-3~Manish~Chennai~Recruiter~125000~HR
-4~Bhushan~Hyderabad~Developer~50000~BFSI 
-ctrl+z
-
-cat /home/cloudera/employee.txt 
-
-hdfs dfs - ls / 
-
+cat /home/cloudera/employee.txt
+hdfs dfs - ls /
 sudo su
 sudo -u hdfs hadoop fs -mkdir /inputdirectory
-hdfs dfs -ls /
-hdfs -ls /inputdirectory
-if this works jump to hive
-
-{{}} -->means if needed
-{{       While executing this, sometimes you will get an error like “Name node in
-Safe mode”.... So to removing it type the following command
+#if anyone get error then type
 hdfs dfsadmin safemode leave
+#if not then type this
 sudo -u hdfs hadoop fs -mkdir /inputdirectory
-sudo -u hdfs hadoop fs -chmod -R 777 /inputdirectory   }}
-
-{{sudo -u hdfs hadoop fs -put /home/cloudera/employee.txt /inputdirectory
+sudo -u hdfs hadoop fs -chmod -R 777 /inputdirectory
+sudo -u hdfs hadoop fs -put /home/cloudera/employee.txt /inputdirectory
 hdfs dfs -ls /
 hdfs dfs -ls /inputdirectory
 hadoop fs -cat /inputdirectory
-hadoop fs -cat /inputdirectory/employee.txt }}
+hadoop fs -cat /inputdirectory/employee.txt
 
 
 hive
@@ -45,8 +29,7 @@ CREATE TABLE employee (id INT, name STRING, city STRING, department STRING, sala
 show tables;
 select * from employee;
 show tables;
-load data inpath ‘/inputdirectory/employee.txt’ overwrite into table
-employee;
+load data inpath ‘/inputdirectory/employee.txt’ overwrite into table employee;
 select * from employee;
 
 
