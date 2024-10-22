@@ -1,0 +1,14 @@
+cat >/home/cloudera/input.csv
+(after this command, type something that will be work as input)
+
+cat /home/cloudera/input.csv 
+
+pig -x local 
+
+grunt> lines = load '/home/cloudera/input.csv' as (line:chararray);
+grunt> words = foreach lines GENERATE FLATTEN (TOKENIZE (line)) as woed;
+grunt> grouped = GROUP words by woed;
+grunt> wordcount = foreach grouped GENERATE group, COUNT(words);
+grunt> dump wordcount; 
+
+Output
