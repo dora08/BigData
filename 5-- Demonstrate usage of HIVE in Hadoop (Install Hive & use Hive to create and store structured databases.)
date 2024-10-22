@@ -1,0 +1,55 @@
+cat > /home/cloudera/employee.txt 
+(after this type the following details one by one)
+1~Sachin~Pune~Product Engineering~100000~Big Data
+2~Gaurav~Bangalore~Sales~90000~CRM
+3~Manish~Chennai~Recruiter~125000~HR
+4~Bhushan~Hyderabad~Developer~50000~BFSI 
+ctrl+z
+
+cat /home/cloudera/employee.txt 
+
+hdfs dfs - ls / 
+
+sudo su
+sudo -u hdfs hadoop fs -mkdir /inputdirectory 
+
+(       While executing this, sometimes you will get an error like “Name node in
+Safe mode”.... So to removing it type the following command
+hdfs dfsadmin safemode leave
+sudo -u hdfs hadoop fs -mkdir /inputdirectory
+sudo -u hdfs hadoop fs -chmod -R 777 /inputdirectory   )
+
+
+sudo -u hdfs hadoop fs -put /home/cloudera/employee.txt /inputdirectory
+hdfs dfs -ls /
+hdfs dfs -ls /inputdirectory
+hadoop fs -cat /inputdirectory
+hadoop fs -cat /inputdirectory/employee.txt 
+
+
+hive
+show databases;
+create database organization;
+show databases;
+use organization;
+show tables;
+create table employee(
+ > id int,
+ > name string,
+ > city string,
+ > department string,
+ > salary int,
+ > domain string)
+ > row format delimited
+ > field terminated by ‘~’;
+show tables;
+select * from employee;
+show tables;
+load data inpath ‘/inputdirectory/employee.txt’ overwrite into table
+employee;
+select * from employee;
+
+
+(The data that we entered as input in the employee.txt file is loaded into the
+databases i.e. we created in hive with proper data types and tilt sign ‘~’. So,
+we got that data in proper table format) 
